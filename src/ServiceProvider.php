@@ -15,11 +15,27 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon(): void
     {
+        $this->bootRunway()
+            ->bootPublishables();
+    }
+
+    public function bootRunway(): self
+    {
         config(['runway.resources' => array_merge(
             [LanguageLine::class => [
                 'name' => 'Translations',
             ]],
             config('runway.resources') ?? []
         )]);
+
+        return $this;
+    }
+
+    public function bootPublishables(): self
+    {
+        $this->publishes([
+            __DIR__.'/../resources/blueprints/vendor/runway' =>
+            resource_path('blueprints/vendor/runway'),
+        ]);
     }
 }
