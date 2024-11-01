@@ -34,8 +34,7 @@ class ServiceProvider extends AddonServiceProvider
     public function bootPublishables(): self
     {
         $this->publishes([
-            __DIR__.'/../resources/blueprints/vendor/runway' =>
-            resource_path('blueprints/vendor/runway'),
+            __DIR__.'/../resources/blueprints/vendor/runway' => resource_path('blueprints/vendor/runway'),
         ]);
     }
 }
