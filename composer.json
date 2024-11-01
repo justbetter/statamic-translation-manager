@@ -1,0 +1,53 @@
+{
+    "name": "justbetter/statamic-translation-management",
+    "autoload": {
+        "psr-4": {
+            "Justbetter\\StatamicTranslationManagement\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Justbetter\\StatamicTranslationManagement\\Tests\\": "tests"
+        }
+    },
+    "require": {
+        "statamic/cms": "^5.0",
+        "spatie/laravel-translation-loader": "^2.8",
+        "statamic-rad-pack/runway": "^7.11"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0",
+        "larastan/larastan": "^2.9",
+        "phpstan/phpstan-mockery": "^1.1",
+        "laravel/pint": "^1.18"
+    },
+    "config": {
+        "allow-plugins": {
+            "pixelfear/composer-dist-plugin": true
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Statamic Translation Management",
+            "description": "Statamic Translation Management addon"
+        },
+        "laravel": {
+            "providers": [
+                "Justbetter\\StatamicTranslationManagement\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "test": "phpunit",
+        "analyse": "phpstan",
+        "style": "pint --test",
+        "quality": [
+            "@test",
+            "@analyse",
+            "@style"
+        ],
+        "fix-style": "pint"
+    }
+}
