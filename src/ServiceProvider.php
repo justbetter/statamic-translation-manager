@@ -37,5 +37,7 @@ class ServiceProvider extends AddonServiceProvider
             __DIR__.'/../resources/blueprints/vendor/runway' =>
             resource_path('blueprints/vendor/runway'),
         ]);
+
+        return $this;
     }
 }
