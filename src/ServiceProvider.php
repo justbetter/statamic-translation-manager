@@ -2,6 +2,7 @@
 
 namespace Justbetter\StatamicTranslationManagement;
 
+use Justbetter\StatamicTranslationManagement\Fieldtypes\TranslationKey;
 use Justbetter\StatamicTranslationManagement\Models\LanguageLine;
 use Spatie\TranslationLoader\TranslationServiceProvider;
 use Statamic\Providers\AddonServiceProvider;
@@ -15,6 +16,8 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon(): void
     {
+        TranslationKey::register();
+
         $this->bootRunway()
             ->bootPublishables();
     }
