@@ -1,0 +1,31 @@
+tabs:
+  main:
+    display: Main
+    sections:
+      -
+        fields:
+          -
+            handle: group
+            field:
+              type: text
+              display: Group
+              validate: required
+              localizable: false
+          -
+            handle: key
+            field:
+              type: translation_key
+              display: Key
+              validate: required
+              localizable: false
+          -
+            handle: text
+            field:
+              type: array
+              display: Text
+              localizable: false
+  sidebar:
+    display: Sidebar
+    sections:
+      - {  }
+title: 'Language line'
