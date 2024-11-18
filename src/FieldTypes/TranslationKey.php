@@ -8,6 +8,21 @@ use Statamic\Fieldtypes\Select;
 
 class TranslationKey extends Select
 {
+    protected $indexComponent = 'tags';
+
+    protected $component = 'select';
+
+    public function preProcessIndex($value)
+    {
+        $values = $this->preProcess($value);
+
+        $values = collect(is_array($values) ? $values : [$values]);
+
+        return $values->map(function ($value) {
+            return $value;
+        })->all();
+    }
+
     protected function getOptions(): array
     {
         $translationKeys = [];
@@ -23,18 +38,20 @@ class TranslationKey extends Select
             '__',
             '$trans.get',
         ];
+
         $stringPattern =
-        "[^\w]" .                                       // Must not have an alphanum before real method
-        '(' . implode('|', $functions) . ')' .          // Must start with one of the functions
-        "\(\s*" .                                       // Match opening parenthesis
-        "(?P<quote>['\"])" .                            // Match " or ' and store in {quote}
-        "(?P<string>(?:\\\k{quote}|(?!\k{quote}).)*)" . // Match any string that can be {quote} escaped
-        "\k{quote}" .                                   // Match " or ' previously matched
-        "\s*[\),]";                                     // Close parentheses or new parameter
+            "[^\w]".                                       // Must not have an alphanum before real method
+            '('.implode('|', $functions).')'.          // Must start with one of the functions
+            "\(\s*".                                       // Match opening parenthesis
+            "(?P<quote>['\"])".                            // Match " or ' and store in {quote}
+            "(?P<string>(?:\\\k{quote}|(?!\k{quote}).)*)". // Match any string that can be {quote} escaped
+            "\k{quote}".                                   // Match " or ' previously matched
+            "\s*[\),]";                                     // Close parentheses or new parameter
 
         $files = [];
 
         $iterator = new RecursiveDirectoryIterator(resource_path());
+
         foreach (new RecursiveIteratorIterator($iterator) as $file) {
             if (strpos($file, '.blade.php') !== false) {
                 $files[] = $file->getRealPath();
@@ -43,6 +60,7 @@ class TranslationKey extends Select
 
         foreach ($files as $file) {
             $contents = file_get_contents($file);
+
             if (preg_match_all("/{$stringPattern}/siU", $contents, $matches)) {
                 foreach ($matches['string'] as $key) {
                     $translationKeys[] = $key;
@@ -50,29 +68,7 @@ class TranslationKey extends Select
             }
         }
 
-        $languages = glob('lang/*.json');
-
-
-        foreach ($languages as $language) {
-            $language = basename($language, '.json');
-            $translationKeys = array_unique($translationKeys);
-
-            $translations = (array) json_decode(file_get_contents("lang/$language.json"));
-            $vendorfiles = array_merge(
-                glob("vendor/*/*/lang/$language.json"),
-                glob("vendor/*/*/resources/lang/$language.json")
-            );
-            
-            foreach ($vendorfiles as $file) {
-                $translations = array_merge(
-                    $translations,
-                    (array) json_decode(file_get_contents($file))
-                );
-            }
-        }
-        dd($languages);
-        
-        return ['test' => 'Test'];
+        return collect($translationKeys)->unique()->mapWithKeys(fn ($key) => [$key => $key])->toArray();
     }
 
     protected function configFieldItems(): array

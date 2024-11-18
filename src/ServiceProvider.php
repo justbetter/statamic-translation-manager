@@ -2,6 +2,7 @@
 
 namespace Justbetter\StatamicTranslationManagement;
 
+use Justbetter\StatamicTranslationManagement\Fieldtypes\LocaleSelectArray;
 use Justbetter\StatamicTranslationManagement\Fieldtypes\TranslationKey;
 use Justbetter\StatamicTranslationManagement\Models\LanguageLine;
 use Spatie\TranslationLoader\TranslationServiceProvider;
@@ -17,6 +18,7 @@ class ServiceProvider extends AddonServiceProvider
     public function bootAddon(): void
     {
         TranslationKey::register();
+        LocaleSelectArray::register();
 
         $this->bootRunway()
             ->bootPublishables();

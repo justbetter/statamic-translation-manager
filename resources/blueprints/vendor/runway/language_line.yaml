@@ -5,13 +5,6 @@ tabs:
       -
         fields:
           -
-            handle: group
-            field:
-              type: text
-              display: Group
-              validate: required
-              localizable: false
-          -
             handle: key
             field:
               type: translation_key
@@ -19,13 +12,18 @@ tabs:
               validate: required
               localizable: false
           -
+            handle: group
+            field:
+              type: text
+              display: Group
+              validate: required
+              localizable: false
+              placeholder: 'In general this will be "*"'
+              default: '*'
+          -
             handle: text
             field:
-              type: array
+              type: locale_select_array
               display: Text
               localizable: false
-  sidebar:
-    display: Sidebar
-    sections:
-      - {  }
 title: 'Language line'
