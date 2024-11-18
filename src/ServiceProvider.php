@@ -17,14 +17,12 @@ class ServiceProvider extends AddonServiceProvider
 
     public function bootAddon(): void
     {
-        TranslationKey::register();
-        LocaleSelectArray::register();
-
         $this->bootRunway()
-            ->bootPublishables();
+            ->bootPublishables()
+            ->bootFieldTypes();
     }
 
-    public function bootRunway(): self
+    protected function bootRunway(): self
     {
         config(['runway.resources' => array_merge(
             [LanguageLine::class => [
@@ -36,11 +34,19 @@ class ServiceProvider extends AddonServiceProvider
         return $this;
     }
 
-    public function bootPublishables(): self
+    protected function bootPublishables(): self
     {
         $this->publishes([
             __DIR__.'/../resources/blueprints/vendor/runway' => resource_path('blueprints/vendor/runway'),
         ]);
+
+        return $this;
+    }
+
+    protected function bootFieldTypes(): self
+    {
+        TranslationKey::register();
+        LocaleSelectArray::register();
 
         return $this;
     }
