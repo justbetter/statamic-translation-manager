@@ -35,7 +35,6 @@ class ServiceProvider extends AddonServiceProvider
         config(['runway.resources' => array_merge(
             [LanguageLine::class => [
                 'name' => 'Translations',
-                'primary_column' => 'key',
             ]],
             config('runway.resources') ?? []
         )]);
