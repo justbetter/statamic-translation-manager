@@ -10,6 +10,7 @@ use Statamic\Providers\AddonServiceProvider;
 
 class ServiceProvider extends AddonServiceProvider
 {
+    // @phpstan-ignore-next-line
     protected $vite = [
         'input' => [
             'resources/js/translation-manager.js',
@@ -34,7 +35,7 @@ class ServiceProvider extends AddonServiceProvider
         config(['runway.resources' => array_merge(
             [LanguageLine::class => [
                 'name' => 'Translations',
-                'primary_column' => 'key'
+                'primary_column' => 'key',
             ]],
             config('runway.resources') ?? []
         )]);
