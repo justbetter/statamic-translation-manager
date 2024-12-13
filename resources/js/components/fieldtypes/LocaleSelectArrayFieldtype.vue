@@ -3,33 +3,28 @@
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>Locale</th>
-                    <th>Value</th>
-                    <th>Actions</th>
+                    <th>{{ __('Locale') }}</th>
+                    <th>{{ __('Value') }}</th>
+                    <th>{{ __('Actions') }}</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(row, index) in rows" :key="index">
                     <td>
-                        <v-select 
-                            v-model="row.key" 
-                            :options="configOptions" 
-                            label="label" 
-                            value-field="value"
-                            placeholder="Select a key" 
-                        />
+                        <v-select v-model="row.key" :options="configOptions" label="label" value-field="value"
+                            :placeholder="__('Select a key')" />
                     </td>
                     <td>
-                        <text-input v-model="row.value" placeholder="Enter value" :name="'value-' + index" />
+                        <text-input v-model="row.value" :placeholder="__('Enter value')" :name="'value-' + index" />
                     </td>
                     <td>
-                        <button type="button" @click="removeRow(index)">Remove</button>
+                        <button type="button" @click="removeRow(index)">{{ __('Remove')}}</button>
                     </td>
                 </tr>
             </tbody>
         </table>
 
-        <button type="button" class="btn-primary" @click="addRow">Add Row</button>
+        <button type="button" class="btn-primary" @click="addRow">{{ __('Add Row') }}</button>
     </div>
 </template>
 
