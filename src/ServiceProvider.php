@@ -10,6 +10,13 @@ use Statamic\Providers\AddonServiceProvider;
 
 class ServiceProvider extends AddonServiceProvider
 {
+    protected $vite = [
+        'input' => [
+            'resources/js/translation-manager.js',
+        ],
+        'publicDirectory' => 'resources/dist',
+    ];
+
     public function register()
     {
         $this->app->register(TranslationServiceProvider::class, true);
@@ -27,6 +34,7 @@ class ServiceProvider extends AddonServiceProvider
         config(['runway.resources' => array_merge(
             [LanguageLine::class => [
                 'name' => 'Translations',
+                'primary_column' => 'key'
             ]],
             config('runway.resources') ?? []
         )]);

@@ -3,7 +3,7 @@
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>Key</th>
+                    <th>Locale</th>
                     <th>Value</th>
                     <th>Actions</th>
                 </tr>
