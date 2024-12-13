@@ -1,4 +1,4 @@
 composer.lock
 node_modules
-vendor
+/vendor
 mix-manifest.json

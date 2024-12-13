@@ -1,0 +1,29 @@
+tabs:
+  main:
+    display: Main
+    sections:
+      -
+        fields:
+          -
+            handle: key
+            field:
+              type: translation_key
+              display: Key
+              validate: required
+              localizable: false
+          -
+            handle: group
+            field:
+              type: text
+              display: Group
+              validate: required
+              localizable: false
+              placeholder: 'In general this will be "*"'
+              default: '*'
+          -
+            handle: text
+            field:
+              type: locale_select_array
+              display: Text
+              localizable: false
+title: 'Language line'
