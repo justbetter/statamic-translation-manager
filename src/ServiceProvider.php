@@ -10,6 +10,14 @@ use Statamic\Providers\AddonServiceProvider;
 
 class ServiceProvider extends AddonServiceProvider
 {
+    // @phpstan-ignore-next-line
+    protected $vite = [
+        'input' => [
+            'resources/js/translation-manager.js',
+        ],
+        'publicDirectory' => 'resources/dist',
+    ];
+
     public function register()
     {
         $this->app->register(TranslationServiceProvider::class, true);

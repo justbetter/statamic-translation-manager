@@ -1,6 +1,3 @@
-# WIP
-This addon is still a WIP.
-
 # Statamic Translation Management
 
 > Statamic Translation Management is a Statamic addon that allows you to add/edit translations.
@@ -23,11 +20,6 @@ To publish and migrate, you can run:
 ```bash
 php artisan vendor:publish --provider="Spatie\TranslationLoader\TranslationServiceProvider" --tag="migrations"
 php artisan migrate
-```
-
-This addon adds two custom field types, if you want to use them include the script in your cp.js.
-```js
-import 'Vendor/justbetter/statamic-translation-management/resources/js/translation-manager.js'
 ```
 
 ## How to Use
