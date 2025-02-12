@@ -14,13 +14,31 @@ class TranslationKey extends Select
 
     public function preProcessIndex($value)
     {
-        $values = $this->preProcess($value);
-
-        $values = collect(is_array($values) ? $values : [$values]);
+        $values = collect(is_array($value) ? $value : [$value]);
 
         return $values->map(function ($value) {
             return $value;
         })->all();
+    }
+
+    public function preProcess($value)
+    {
+        if (!$this->field->parent()?->group) {
+            return $value;
+        }
+        $group = $this->field->parent()->group;
+        return $group . '.' . $value;
+    }
+
+    public function process($value)
+    {
+        $data = explode('.', $value);
+        if (count($data) > 1) {
+            $this->field->parent()->group = $data[0];
+            return $data[1];
+        }
+
+        return $value;
     }
 
     protected function getOptions(): array
@@ -40,12 +58,12 @@ class TranslationKey extends Select
         ];
 
         $stringPattern =
-            "[^\w]".                                       // Must not have an alphanum before real method
-            '('.implode('|', $functions).')'.          // Must start with one of the functions
-            "\(\s*".                                       // Match opening parenthesis
-            "(?P<quote>['\"])".                            // Match " or ' and store in {quote}
-            "(?P<string>(?:\\\k{quote}|(?!\k{quote}).)*)". // Match any string that can be {quote} escaped
-            "\k{quote}".                                   // Match " or ' previously matched
+            "[^\w]" .                                       // Must not have an alphanum before real method
+            '(' . implode('|', $functions) . ')' .          // Must start with one of the functions
+            "\(\s*" .                                       // Match opening parenthesis
+            "(?P<quote>['\"])" .                            // Match " or ' and store in {quote}
+            "(?P<string>(?:\\\k{quote}|(?!\k{quote}).)*)" . // Match any string that can be {quote} escaped
+            "\k{quote}" .                                   // Match " or ' previously matched
             "\s*[\),]";                                     // Close parentheses or new parameter
 
         $files = [];
@@ -62,13 +80,13 @@ class TranslationKey extends Select
             $contents = file_get_contents($file);
 
             if (preg_match_all("/{$stringPattern}/siU", $contents, $matches)) {
-                foreach ($matches['string'] as $key) {
-                    $translationKeys[] = $key;
+                foreach ($matches['string'] as $match) {
+                    $translationKeys[] = $match;
                 }
             }
         }
 
-        return collect($translationKeys)->unique()->mapWithKeys(fn ($key) => [$key => $key])->toArray();
+        return collect($translationKeys)->unique()->mapWithKeys(fn($key) => [$key => $key])->toArray();
     }
 
     protected function configFieldItems(): array
