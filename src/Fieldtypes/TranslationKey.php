@@ -23,11 +23,12 @@ class TranslationKey extends Select
 
     public function preProcess($value)
     {
-        if (!$this->field->parent()?->group) {
+        if (! $this->field->parent()?->group) {
             return $value;
         }
         $group = $this->field->parent()->group;
-        return $group . '.' . $value;
+
+        return $group.'.'.$value;
     }
 
     public function process($value)
@@ -35,6 +36,7 @@ class TranslationKey extends Select
         $data = explode('.', $value);
         if (count($data) > 1) {
             $this->field->parent()->group = $data[0];
+
             return $data[1];
         }
 
@@ -58,12 +60,12 @@ class TranslationKey extends Select
         ];
 
         $stringPattern =
-            "[^\w]" .                                       // Must not have an alphanum before real method
-            '(' . implode('|', $functions) . ')' .          // Must start with one of the functions
-            "\(\s*" .                                       // Match opening parenthesis
-            "(?P<quote>['\"])" .                            // Match " or ' and store in {quote}
-            "(?P<string>(?:\\\k{quote}|(?!\k{quote}).)*)" . // Match any string that can be {quote} escaped
-            "\k{quote}" .                                   // Match " or ' previously matched
+            "[^\w]".                                       // Must not have an alphanum before real method
+            '('.implode('|', $functions).')'.          // Must start with one of the functions
+            "\(\s*".                                       // Match opening parenthesis
+            "(?P<quote>['\"])".                            // Match " or ' and store in {quote}
+            "(?P<string>(?:\\\k{quote}|(?!\k{quote}).)*)". // Match any string that can be {quote} escaped
+            "\k{quote}".                                   // Match " or ' previously matched
             "\s*[\),]";                                     // Close parentheses or new parameter
 
         $files = [];
@@ -86,7 +88,7 @@ class TranslationKey extends Select
             }
         }
 
-        return collect($translationKeys)->unique()->mapWithKeys(fn($key) => [$key => $key])->toArray();
+        return collect($translationKeys)->unique()->mapWithKeys(fn ($key) => [$key => $key])->toArray();
     }
 
     protected function configFieldItems(): array
