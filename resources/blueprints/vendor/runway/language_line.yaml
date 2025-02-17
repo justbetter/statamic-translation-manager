@@ -21,7 +21,7 @@ tabs:
             handle: group
             field:
               default: '*'
-              type: hidden
+              type: text
               display: Group
               localizable: false
               visibility: hidden
