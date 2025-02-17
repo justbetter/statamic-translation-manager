@@ -14,11 +14,11 @@ class LocaleSelectArray extends Arr
     public function preload(): array
     {
         return [
-            'options' => $this->getOptions(),
+            'locales' => $this->getLocales(),
         ];
     }
 
-    protected function getOptions(): array
+    protected function getLocales(): array
     {
         return Site::all()
             ->pluck('lang')

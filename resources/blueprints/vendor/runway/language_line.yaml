@@ -5,6 +5,13 @@ tabs:
       -
         fields:
           -
+            handle: group
+            field:
+              type: text
+              display: Group
+              localizable: false
+              visibility: read_only
+          -
             handle: key
             field:
               type: translation_key
@@ -16,13 +23,4 @@ tabs:
             field:
               type: locale_select_array
               display: Translations
-              localizable: false
-          -
-            handle: group
-            field:
-              default: '*'
-              type: text
-              display: Group
-              localizable: false
-              visibility: hidden
 title: 'Language line'

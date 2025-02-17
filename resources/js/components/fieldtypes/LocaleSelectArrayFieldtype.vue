@@ -5,26 +5,20 @@
                 <tr>
                     <th>{{ __('Locale') }}</th>
                     <th>{{ __('Value') }}</th>
-                    <th>{{ __('Actions') }}</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(row, index) in rows" :key="index">
+                <tr v-for="(locale, index) in locales" :key="index">
                     <td>
-                        <v-select v-model="row.key" :options="configOptions" label="label" value-field="value"
-                            :placeholder="__('Select a key')" />
+                        <p class="text-uppercase">{{ locale.label }}</p>
                     </td>
                     <td>
-                        <text-input v-model="row.value" :placeholder="__('Enter value')" :name="'value-' + index" />
-                    </td>
-                    <td>
-                        <button type="button" @click="removeRow(index)">{{ __('Remove')}}</button>
+                        <text-input v-model="rows[locale.value]" :placeholder="__('Enter value')"
+                            :name="'value-' + index" />
                     </td>
                 </tr>
             </tbody>
         </table>
-
-        <button type="button" class="btn-primary" @click="addRow">{{ __('Add Row') }}</button>
     </div>
 </template>
 
@@ -45,14 +39,6 @@ export default {
             rows: this.parseInitialValue(this.value),
         };
     },
-    computed: {
-        configOptions() {
-            return Object.values(this.$attrs.meta.options).map((option) => ({
-                label: option,
-                value: option,
-            }));
-        },
-    },
     watch: {
         rows: {
             handler() {
@@ -63,26 +49,26 @@ export default {
     },
     methods: {
         parseInitialValue(value) {
-            return Object.entries(value).map(([key, val]) => ({
-                key: { label: key, value: key },
-                value: val,
-            }));
+            let rows = {};
+            for (let index = 0; index < this.$attrs.meta.locales.length; index++) {
+                const locale = this.$attrs.meta.locales[index];
+
+                rows[locale] = value[locale] ?? '';
+            }
+
+            return rows;
         },
         transformToDatabaseFormat() {
-            return this.rows.reduce((acc, row) => {
-                if (row.key && row.key.value) {
-                    acc[row.key.value] = row.value;
-                }
-                return acc;
-            }, {});
-        },
-        addRow() {
-            this.rows.push({ key: { label: '', value: '' }, value: '' });
-        },
-        removeRow(index) {
-            this.rows.splice(index, 1);
+            return this.rows;
+        }
+    },
+    computed: {
+        locales() {
+            return Object.values(this.$attrs.meta.locales).map((option) => ({
+                label: option,
+                value: option,
+            }));
         },
     },
 };
 </script>
-
